@@ -1,0 +1,27 @@
+{
+  "name": "nuxt-catalog",
+  "version": "1.0.0",
+  "description": "Интернет-каталог 'Код и Кофе' на Nuxt для НИР3",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "start": "cross-env PORT=3012 node .output/server/index.mjs",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "nuxt": "^3.10.0",
+    "vue": "^3.4.15"
+  },
+  "devDependencies": {
+    "@nuxt/types": "^2.17.3",
+    "cross-env": "^7.0.3",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
