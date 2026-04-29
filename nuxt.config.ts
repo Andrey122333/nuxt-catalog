@@ -1,11 +1,11 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  
+
   devServer: {
-    port: 3012,
+    port: 3000,
     host: '0.0.0.0'
   },
-  
+
   app: {
     head: {
       title: 'Код и Кофе — Интернет-магазин для разработчиков',

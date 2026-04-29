@@ -1,24 +1,30 @@
-FROM node:20-alpine AS builder
-
+FROM node:20-alpine AS base
 WORKDIR /app
 
-COPY package*.json ./
-RUN npm install
+FROM base AS deps
+RUN apk add --no-cache libc6-compat
+COPY package.json package-lock.json* ./
+RUN npm ci --no-audit --no-fund
 
+FROM base AS builder
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npm run build
 
-FROM node:20-alpine AS runner
-
+FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
-ENV PORT=3012
-ENV HOST=0.0.0.0
+ENV NITRO_HOST=0.0.0.0
+ENV NITRO_PORT=3000
 
-COPY --from=builder /app/.output ./.output
-COPY --from=builder /app/package.json ./package.json
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nuxt
 
-EXPOSE 3012
+COPY --from=builder --chown=nuxt:nodejs /app/.output ./.output
 
-CMD ["npm", "start"]
+USER nuxt
+
+EXPOSE 3000
+
+CMD ["node", ".output/server/index.mjs"]

@@ -22,7 +22,7 @@ npm install
 npm run dev
 ```
 
-Приложение будет доступно по адресу: http://localhost:3012
+Приложение будет доступно по адресу: http://localhost:3000
 
 ## Production сборка
 
@@ -33,14 +33,14 @@ npm start
 
 Или вручную:
 ```bash
-PORT=3012 node .output/server/index.mjs
+PORT=3000 node .output/server/index.mjs
 ```
 
 ## Docker
 
 ```bash
 docker build -t nuxt-catalog .
-docker run -p 3012:3012 nuxt-catalog
+docker run -p 3000:3000 nuxt-catalog
 ```
 
 ## Структура проекта

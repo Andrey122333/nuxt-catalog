@@ -9,7 +9,7 @@
     "build": "nuxt build",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "start": "cross-env PORT=3012 node .output/server/index.mjs",
+    "start": "cross-env PORT=3000 node .output/server/index.mjs",
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
