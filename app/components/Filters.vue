@@ -204,6 +204,8 @@ function toggleBrand(brandId: string) {
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
+  font-family: var(--font-base);
+  line-height: 1.5;
 }
 
 .reset-button {
@@ -236,6 +238,8 @@ function toggleBrand(brandId: string) {
   font-size: 1rem;
   font-weight: 600;
   color: var(--gray-900);
+  font-family: var(--font-base);
+  line-height: 1.5;
 }
 
 .checkbox,

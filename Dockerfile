@@ -1,17 +1,17 @@
-FROM node:20-alpine AS base
+FROM node:22-alpine AS base
 WORKDIR /app
 
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
-COPY package.json package-lock.json* ./
-RUN npm ci --no-audit --no-fund
+COPY package.json ./
+RUN npm install --ignore-scripts --no-audit --no-fund
 
 FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npm run build
 
-FROM base AS runner
+FROM node:22-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production

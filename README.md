@@ -1,40 +1,15 @@
 # Nuxt Каталог "Код и Кофе"
 
-Интернет-магазин товаров для разработчиков на Nuxt 3 с Vue 3 Composition API.
+Интернет-магазин товаров для разработчиков на Nuxt 4 с Vue 3 Composition API.
 
 ## Технологии
 
-- **Nuxt:** 3.10.0
-- **Vue:** 3.4.15
-- **TypeScript:** 5.3.3
-- **Vite:** 6.0.0
+- **Nuxt:** 4.4.5
+- **Vue:** 3.5.34
+- **TypeScript:** 6.0.3
+- **Vite:** 7.3.3 (встроен в Nuxt)
+- **Nitro:** 2.13.4
 - **Nitro Engine** для SSR
-
-## Установка
-
-```bash
-npm install
-```
-
-## Разработка
-
-```bash
-npm run dev
-```
-
-Приложение будет доступно по адресу: http://localhost:3000
-
-## Production сборка
-
-```bash
-npm run build
-npm start
-```
-
-Или вручную:
-```bash
-PORT=3000 node .output/server/index.mjs
-```
 
 ## Docker
 
@@ -42,64 +17,66 @@ PORT=3000 node .output/server/index.mjs
 docker build -t nuxt-catalog .
 docker run -p 3000:3000 nuxt-catalog
 ```
+Приложение будет доступно по адресу: http://localhost:3000
 
 ## Структура проекта
 
 ```
 nuxt-catalog/
-├── components/
-│   ├── Header.vue
-│   ├── Footer.vue
-│   └── ProductCard.vue
-├── composables/
-│   └── useCart.ts          # Composable для корзины
-├── pages/
-│   ├── index.vue
-│   └── catalog/
-│       ├── index.vue       # Список товаров
-│       └── [id].vue        # Детальная страница
-├── utils/
-│   └── products.ts         # Утилиты для товаров
-├── types/
-│   └── index.ts            # TypeScript типы
-├── data/
-│   └── products.json
-└── nuxt.config.ts
+├── app/                            # srcDir (новое в Nuxt 4)
+│   ├── components/
+│   │   ├── Filters.vue             # Панель фильтров
+│   │   ├── Footer.vue              # Подвал
+│   │   ├── Header.vue              # Шапка с корзиной
+│   │   ├── ProductCard.vue         # Карточка товара
+│   │   └── Sort.vue                # Сортировка
+│   ├── composables/
+│   │   └── useCart.ts              # Composable корзины
+│   ├── pages/
+│   │   ├── index.vue               # Редирект на /catalog
+│   │   └── catalog/
+│   │       ├── index.vue           # Страница каталога
+│   │       └── [id].vue            # Детальная страница товара
+│   ├── utils/
+│   │   └── products.ts             # Утилиты и фильтрация товаров
+│   ├── types/
+│   │   └── index.ts                # TypeScript типы
+│   └── data/
+│       └── products.json           # База товаров
+├── nuxt.config.ts
+├── tsconfig.json
+└── package.json
 ```
 
-## Особенности Nuxt 3
+## Настройка переменных и обновление репозитория
 
-### Composables
+Для корректной работы автоматизированного процесса сборки и развертывания необходимо добавить переменные в репозиторий GitHub и выполнить обновление проекта.
 
-Auto-import composables без явного импорта:
+### Добавление переменных репозитория
 
-```vue
-<script setup>
-const cart = useCart();  // Автоматически импортируется
-const route = useRoute();
-</script>
+В интерфейсе GitHub открыть:
+
+```
+Settings → Actions secrets and variables → Variables
 ```
 
-### useState
+Добавить две переменные:
 
-Shared state между компонентами:
+- **REGISTRY** — адрес контейнерного реестра (например, `ghcr.io`)
+- **IMAGE_NAME** — имя Docker‑образа, используемое в процессе сборки
 
-```typescript
-const items = useState<CartItem[]>('cart-items', () => []);
+Эти параметры позволяют workflow корректно формировать и публиковать контейнер приложения.
+
+---
+
+### Обновление репозитория
+
+После добавления переменных необходимо зафиксировать изменения в проекте и отправить их в основную ветку:
+
+```bash
+git add .
+git commit -m "Добавлены переменные для CI/CD"
+git push origin main
 ```
 
-### useAsyncData
-
-SSR data fetching (если используется):
-
-```typescript
-const { data } = await useAsyncData('products', () => fetchProducts());
-```
-
-## Корзина
-
-Корзина реализована через composable `useCart()`:
-
-- Сохранение в LocalStorage
-- Реактивное состояние через `useState`
-- Auto-import во всех компонентах
+После отправки изменений GitHub автоматически запускает настроенный workflow, который выполняет сборку и публикацию образа, а также обновляет развернутое приложение.

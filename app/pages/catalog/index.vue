@@ -82,6 +82,12 @@ const filterOptions = getFilterOptions();
   margin-bottom: 0.5rem;
 }
 
+.hero p {
+  color: var(--color-text-secondary);
+  font-size: 1.125rem;
+  margin-bottom: 1rem;
+}
+
 .count {
   color: var(--color-text-secondary);
   font-size: 0.875rem;
