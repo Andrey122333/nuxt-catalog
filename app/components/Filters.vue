@@ -152,17 +152,12 @@ watch(
       query.sort = route.query.sort;
     }
 
-    router.push({ path: '/catalog', query });
+    router.push({ path: '/catalog', query }).catch(() => {});
   },
   { deep: true }
 );
 
 function resetFilters() {
-  selectedCategories.value = [];
-  selectedBrands.value = [];
-  priceMin.value = props.filterOptions.priceRange.min;
-  priceMax.value = props.filterOptions.priceRange.max;
-  availability.value = 'all';
   router.push('/catalog');
 }
 
